@@ -58,7 +58,7 @@ class Visualizations(KibanaApiBase):
         Returns a list of all visualizations
         :return: list of the Visualization instances
         """
-        res = es.search(index=self.index, doc_type=self.doc_type, body={'query': {'match_all': {}}})
+        res = self.es.search(index=self.index, doc_type=self.doc_type, body={'query': {'match_all': {}}})
         if not res['hits']['total']:
             return []
         return [Visualization.from_kibana(hit) for hit in res['hits']['hits']]
@@ -69,8 +69,8 @@ class Visualizations(KibanaApiBase):
         :param visualization: instance of Visualization
         :return:
         """
-        res = es.create(index=self.index, id=str(uuid.uuid1()), doc_type=self.doc_type,
-                        body=visualization.to_kibana(), refresh=True)
+        res = self.es.create(index=self.index, id=str(uuid.uuid1()), doc_type=self.doc_type,
+                             body=visualization.to_kibana(), refresh=True)
         return res
 
     def update(self, visualization):
@@ -79,9 +79,9 @@ class Visualizations(KibanaApiBase):
         :param visualization: instance of Visualization that was previously loaded
         :return:
         """
-        res = es.update(index=self.index, id=visualization.id, doc_type=self.doc_type,
-                        body={'doc': visualization.to_kibana()},
-                        refresh=True)
+        res = self.es.update(index=self.index, id=visualization.id, doc_type=self.doc_type,
+                             body={'doc': visualization.to_kibana()},
+                             refresh=True)
         return res
 
     def remove(self, visualization):
@@ -90,7 +90,7 @@ class Visualizations(KibanaApiBase):
         :param visualization: instance of Visualization that was previously loaded
         :return:
         """
-        res = es.delete(index=self.index, id=visualization.id, doc_type=self.doc_type, refresh=True)
+        res = self.es.delete(index=self.index, id=visualization.id, doc_type=self.doc_type, refresh=True)
         return res
 
 

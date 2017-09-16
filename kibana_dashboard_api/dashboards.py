@@ -1,4 +1,5 @@
 from .common import KibanaApiModelBase, KibanaApiBase
+import uuid
 
 
 class Dashboard(KibanaApiModelBase):
@@ -78,7 +79,7 @@ class Dashboards(KibanaApiBase):
         Returns a list of all dashboards
         :return:
         """
-        res = es.search(index=self.index, doc_type=self.doc_type, body={'query': {'match_all': {}}})
+        res = self.es.search(index=self.index, doc_type=self.doc_type, body={'query': {'match_all': {}}})
         if not res['hits']['total']:
             return []
         return [Dashboard.from_kibana(hit) for hit in res['hits']['hits']]
@@ -89,7 +90,8 @@ class Dashboards(KibanaApiBase):
         :param dashboard: instance of Dashboard
         :return:
         """
-        pass
+        res = self.es.create(index=self.index, id=str(uuid.uuid1()), doc_type=self.doc_type,
+                             body=dashboard.to_kibana(), refresh=True)
 
     def update(self, dashboard):
         """
@@ -97,7 +99,10 @@ class Dashboards(KibanaApiBase):
         :param dashboard: instance of Dashboard that was previously loaded
         :return:
         """
-        pass
+        res = self.es.update(index=self.index, id=dashboard.id, doc_type=self.doc_type,
+                             body={'doc': dashboard.to_kibana()},
+                             refresh=True)
+        return res
 
     def remove(self, dashboard):
         """
@@ -105,4 +110,5 @@ class Dashboards(KibanaApiBase):
         :param dashboard:
         :return:
         """
-        pass
+        res = self.es.delete(index=self.index, id=dashboard.id, doc_type=self.doc_type, refresh=True)
+        return res
