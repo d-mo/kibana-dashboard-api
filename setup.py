@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='kibana_dashboard_api',
-      version='0.0.1',
+      version='0.0.2',
       description='Manages Kiabana visualizations and dashboards.',
       long_description='List/create/delete Kibana visualizations and dashboards manipulating Elasticsearch index.',
       classifiers=[
