@@ -31,7 +31,7 @@ visualizations.update(vis)
 ```python
 dashboards = DashboardsManager(es_connection)
 
-# list all visualizations
+# list all dashboards
 dash_list = dashboards.get_all()
 for d in dash_list:
     print(d.title)
