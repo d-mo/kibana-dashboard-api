@@ -11,7 +11,7 @@ from elasticsearch import Elasticsearch
 
 es_connection = Elasticsearch(hosts=['http://login:pass@localhost:9200/'])
 
-visualizations = Visualizations(es_connection)
+visualizations = VisualizationsManager(es_connection)
 
 # list all visualizations
 vis_list = visualizations.get_all()
@@ -29,7 +29,7 @@ visualizations.update(vis)
 ### Dashboards
 
 ```python
-dashboards = Dashboards(es_connection)
+dashboards = DashboardsManager(es_connection)
 
 # list all visualizations
 dash_list = dashboards.get_all()
@@ -38,7 +38,7 @@ for d in dash_list:
 
 # Add a visualization to the first dashboard
 dash = dash_list[0]
-dash.add_visualization(vis)
+dash.add_visualization(vis, 6, 3)
 dashboards.update(dash)
 ```
 
