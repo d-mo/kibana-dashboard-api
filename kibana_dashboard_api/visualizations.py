@@ -46,7 +46,7 @@ class Visualization(KibanaApiModelBase):
             id=self.id)
 
 
-class Visualizations(KibanaApiBase):
+class VisualizationsManager(KibanaApiBase):
     """
     Manages Kibana visualizations
     """
@@ -75,7 +75,7 @@ class Visualizations(KibanaApiBase):
 
     def update(self, visualization):
         """
-        Updated existing visualization
+        Updates existing visualization
         :param visualization: instance of Visualization that was previously loaded
         :return:
         """
@@ -94,7 +94,7 @@ class Visualizations(KibanaApiBase):
         return res
 
 
-class VisualizationTemplates(Visualizations):
+class VisualizationTemplatesManager(VisualizationsManager):
     """
     Manages visualization templates. Creates a new document type vis_template in the Kibana index
     """

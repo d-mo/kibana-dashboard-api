@@ -1,2 +1,2 @@
-from .dashboards import Dashboards, Dashboard
-from .visualizations import Visualization, Visualizations, VisualizationTemplates
+from .dashboards import DashboardsManager, Dashboard
+from .visualizations import Visualization, VisualizationsManager, VisualizationTemplatesManager

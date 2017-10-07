@@ -70,9 +70,14 @@ class Dashboard(KibanaApiModelBase):
 
     def add_visualization(self, visualization, size_x=6, size_y=3, col=0, row=0):
         """
-        Adds the visualization to the dashboard
-        :param visualization:
-        :return:
+        Adds the visualization to the dashboard. Leave col and row = 0 for automatic placement of the visualization.
+        Visualizations are placed on a grid with 12 columns and unlimited rows.
+        :param visualization: previously loaded visualization
+        :param size_x width of the panel
+        :param size_y height of the panel
+        :param col 1-based column of the top left corner, leave 0 for automatic placement
+        :param row 1-based row of the top left corner, leave 0 for automatic placement
+        :return: newly created panel or None
         """
         new_panel_index = self.get_max_index()+1
         if col and row:
@@ -93,11 +98,21 @@ class Dashboard(KibanaApiModelBase):
                 new_panel['type'] = 'visualization'
                 return new_panel
 
+    def remove_visualization(self, visualization_id):
+        """
+        Removes all visualizations with the specified id from the dashboard
+        :param visualization_id:
+        :return:
+        """
+        for i, panel in enumerate(self.panels):
+            if panel['id'] == visualization_id:
+                del self.panels[i]
+
     def get_max_index(self):
         return reduce(lambda max_index, panel: max(max_index, panel['panelIndex']), self.panels, 0)
 
 
-class Dashboards(KibanaApiBase):
+class DashboardsManager(KibanaApiBase):
     """
     Manages Kibana dashboards
     """
@@ -116,7 +131,7 @@ class Dashboards(KibanaApiBase):
 
     def add(self, dashboard):
         """
-        Created a new dashboard
+        Creates a new dashboard
         :param dashboard: instance of Dashboard
         :return:
         """
@@ -125,7 +140,7 @@ class Dashboards(KibanaApiBase):
 
     def update(self, dashboard):
         """
-        Updated the existing dashboard
+        Updates the existing dashboard
         :param dashboard: instance of Dashboard that was previously loaded
         :return:
         """
