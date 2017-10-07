@@ -1,5 +1,7 @@
 from .common import KibanaApiModelBase, KibanaApiBase
 import uuid
+from functools import reduce
+from .paneltools import append_panel
 
 
 class Dashboard(KibanaApiModelBase):
@@ -66,6 +68,34 @@ class Dashboard(KibanaApiModelBase):
     def __unicode__(self):
         return self.title
 
+    def add_visualization(self, visualization, size_x=6, size_y=3, col=0, row=0):
+        """
+        Adds the visualization to the dashboard
+        :param visualization:
+        :return:
+        """
+        new_panel_index = self.get_max_index()+1
+        if col and row:
+            new_panel = {
+                'col': col, 'row': row,
+                'size_x': size_x, 'size_y': size_y,
+                'panelIndex': new_panel_index,
+                'type': 'visualization',
+                'id': visualization.id
+            }
+            self.panels.append(new_panel)
+            return new_panel
+        else:
+            new_panel = append_panel(self.panels, size_x, size_y)
+            if new_panel:
+                new_panel['id'] = visualization.id
+                new_panel['panelIndex'] = new_panel_index
+                new_panel['type'] = 'visualization'
+                return new_panel
+
+    def get_max_index(self):
+        return reduce(lambda max_index, panel: max(max_index, panel['panelIndex']), self.panels, 0)
+
 
 class Dashboards(KibanaApiBase):
     """
@@ -112,3 +142,4 @@ class Dashboards(KibanaApiBase):
         """
         res = self.es.delete(index=self.index, id=dashboard.id, doc_type=self.doc_type, refresh=True)
         return res
+
