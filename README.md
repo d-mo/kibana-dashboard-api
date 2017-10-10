@@ -1,6 +1,8 @@
 # kibana-dashboard-api
 List/create/delete Kibana visualizations and dashboards directly manipulating Elasticsearch index.
 
+[![Build Status](https://travis-ci.org/harabchuk/kibana-dashboard-api.svg?branch=master)](https://travis-ci.org/harabchuk/kibana-dashboard-api)
+
 ## Intro
 
 ### Visualizations
