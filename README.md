@@ -8,7 +8,7 @@ List/create/delete Kibana visualizations and dashboards directly manipulating El
 ### Visualizations
 
 ```python
-from kibana_dashboard_api import Visualizations, Dashboards
+from kibana_dashboard_api import VisualizationsManager, DashboardsManager
 from elasticsearch import Elasticsearch
 
 es_connection = Elasticsearch(hosts=['http://login:pass@localhost:9200/'])
