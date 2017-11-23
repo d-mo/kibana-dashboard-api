@@ -135,8 +135,11 @@ class DashboardsManager(KibanaApiBase):
         :param dashboard: instance of Dashboard
         :return:
         """
-        res = self.es.create(index=self.index, id=str(uuid.uuid1()), doc_type=self.doc_type,
+        res = self.es.create(index=self.index,
+                             id=dashboard.id or str(uuid.uuid1()),
+                             doc_type=self.doc_type,
                              body=dashboard.to_kibana(), refresh=True)
+        return res
 
     def update(self, dashboard):
         """

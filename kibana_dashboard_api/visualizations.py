@@ -69,7 +69,9 @@ class VisualizationsManager(KibanaApiBase):
         :param visualization: instance of Visualization
         :return:
         """
-        res = self.es.create(index=self.index, id=str(uuid.uuid1()), doc_type=self.doc_type,
+        res = self.es.create(index=self.index,
+                             id=visualization.id or str(uuid.uuid1()),
+                             doc_type=self.doc_type,
                              body=visualization.to_kibana(), refresh=True)
         return res
 
